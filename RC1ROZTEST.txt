@@ -1,0 +1,45 @@
+#define Zin A0
+const int rawZ = A0;
+int minZ, maxZ, curRawZ;
+String stringMinZ, stringMaxZ, stringRawZ, string3Spaces;
+unsigned long tm;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(Zin, INPUT);
+  string3Spaces = "   ";
+  minZ = analogRead(rawZ);
+  maxZ = analogRead(rawZ);
+}
+
+void loop() {
+  curRawZ = analogRead(rawZ);
+  if (curRawZ < minZ) {
+    minZ = curRawZ;
+  }
+  if (curRawZ > maxZ) {
+    maxZ = curRawZ;
+  }
+  
+  stringMinZ = "minZ: ";
+  stringMinZ += minZ;
+  stringMinZ += string3Spaces;
+  Serial.print(stringMinZ);
+
+  stringRawZ = "rawZ: ";
+  stringRawZ += curRawZ;
+  stringRawZ += string3Spaces;
+  Serial.print(stringRawZ);
+  
+  
+  stringMaxZ = "maxZ: ";
+  stringMaxZ += maxZ;
+  stringMaxZ += string3Spaces;
+  Serial.print(stringMaxZ);
+  
+  Serial.print(" Time: ");
+  tm = millis();
+  Serial.println(tm);
+  delay(100);
+
+}
