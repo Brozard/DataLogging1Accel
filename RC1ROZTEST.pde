@@ -1,45 +1,45 @@
-#define Zin A0
+// define Z-axis input at A0
 const int rawZ = A0;
-int minZ, maxZ, curRawZ;
-String stringMinZ, stringMaxZ, stringRawZ, string3Spaces;
+int minZ, maxZ, currentZ;
+String string3Spaces = "   ";
 unsigned long tm;
 
 void setup() {
   Serial.begin(9600);
   pinMode(Zin, INPUT);
-  string3Spaces = "   ";
   minZ = analogRead(rawZ);
   maxZ = analogRead(rawZ);
 }
 
 void loop() {
-  curRawZ = analogRead(rawZ);
-  if (curRawZ < minZ) {
-    minZ = curRawZ;
-  }
-  if (curRawZ > maxZ) {
-    maxZ = curRawZ;
-  }
-  
-  stringMinZ = "minZ: ";
-  stringMinZ += minZ;
-  stringMinZ += string3Spaces;
-  Serial.print(stringMinZ);
+  readAndSetZ();
+  printZ("minZ", minZ);
+  printZ("currentZ", currentZ);
+  printZ("maxZ", maxZ);
+  printTime();
+}
 
-  stringRawZ = "rawZ: ";
-  stringRawZ += curRawZ;
-  stringRawZ += string3Spaces;
-  Serial.print(stringRawZ);
-  
-  
-  stringMaxZ = "maxZ: ";
-  stringMaxZ += maxZ;
-  stringMaxZ += string3Spaces;
-  Serial.print(stringMaxZ);
-  
-  Serial.print(" Time: ");
+void readAndSetZ() {
+  currentZ = analogRead(rawZ);
+  if (currentZ < minZ) {
+    minZ = currentZ;
+  }
+  if (currentZ > maxZ) {
+    maxZ = currentZ;
+  }
+}
+
+void printZ (String strZ, int numZ) {
+  strZ += ": ";
+  strZ += numZ;
+  strZ += string3Spaces;
+  Serial.print(strZ);
+}
+
+void printTime() {
+  Serial.print("Time: ");
   tm = millis();
   Serial.println(tm);
-  delay(100);
-
+  // Delay is every 2 milliseconds since this runs on a 500Hz cycle
+  delay(2);
 }
